@@ -7,6 +7,7 @@ from riseofvph.xdc_handler import create_xdc, delete_xdc
 
 
 def test_create_xdc_from_directory(tmp_path: Path) -> None:
+    """Creating a .xdc from a directory returns the correct path and creates the file."""
     source_dir = tmp_path / "my_extension"
     source_dir.mkdir()
     (source_dir / "file1.txt").write_text("hello")
@@ -19,6 +20,7 @@ def test_create_xdc_from_directory(tmp_path: Path) -> None:
 
 
 def test_create_xdc_produces_valid_zip(tmp_path: Path) -> None:
+    """The created .xdc file is a valid zip containing the expected files."""
     source_dir = tmp_path / "ext"
     source_dir.mkdir()
     (source_dir / "data.txt").write_text("content")
@@ -32,6 +34,7 @@ def test_create_xdc_produces_valid_zip(tmp_path: Path) -> None:
 
 
 def test_create_xdc_with_custom_output_path(tmp_path: Path) -> None:
+    """A custom output_path is respected by create_xdc."""
     source_dir = tmp_path / "ext"
     source_dir.mkdir()
     (source_dir / "a.txt").write_text("a")
@@ -44,6 +47,7 @@ def test_create_xdc_with_custom_output_path(tmp_path: Path) -> None:
 
 
 def test_create_xdc_with_nested_directories(tmp_path: Path) -> None:
+    """Nested subdirectories are preserved in the .xdc archive."""
     source_dir = tmp_path / "ext"
     source_dir.mkdir()
     (source_dir / "a.txt").write_text("a")
@@ -60,6 +64,7 @@ def test_create_xdc_with_nested_directories(tmp_path: Path) -> None:
 
 
 def test_create_xdc_empty_directory(tmp_path: Path) -> None:
+    """An empty directory produces a valid (empty) .xdc file."""
     source_dir = tmp_path / "empty_ext"
     source_dir.mkdir()
 
@@ -71,6 +76,7 @@ def test_create_xdc_empty_directory(tmp_path: Path) -> None:
 
 
 def test_create_xdc_raises_error_on_file_instead_of_directory(tmp_path: Path) -> None:
+    """Passing a file path raises NotADirectoryError."""
     file_path = tmp_path / "not_a_dir.txt"
     file_path.write_text("i am a file")
 
@@ -79,6 +85,7 @@ def test_create_xdc_raises_error_on_file_instead_of_directory(tmp_path: Path) ->
 
 
 def test_delete_xdc_removes_file(tmp_path: Path) -> None:
+    """delete_xdc removes the .xdc file from disk."""
     xdc_file = tmp_path / "test.xdc"
     xdc_file.write_text("dummy content")
 
@@ -88,6 +95,7 @@ def test_delete_xdc_removes_file(tmp_path: Path) -> None:
 
 
 def test_delete_xdc_raises_error_on_nonexistent_file(tmp_path: Path) -> None:
+    """Deleting a file that does not exist raises FileNotFoundError."""
     nonexistent = str(tmp_path / "nonexistent.xdc")
 
     with pytest.raises(FileNotFoundError):
