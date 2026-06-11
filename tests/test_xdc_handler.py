@@ -69,7 +69,7 @@ def test_create_xdc_raises_error_on_file_instead_of_directory(tmp_path: Path) ->
     file_path.write_text("i am a file")
 
     with pytest.raises(NotADirectoryError):
-        create_xdc(str(file_path))
+        create_xdc(file_path)
 
 
 def test_delete_xdc_removes_file(tmp_path: Path) -> None:
