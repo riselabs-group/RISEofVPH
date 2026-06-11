@@ -5,16 +5,9 @@ from src.riseofvph.xdc_handler import create_xdc, delete_xdc
 
 
 
-def test_create_xdc_from_directory(tmp_path: Path) -> None:
-    source_dir = tmp_path / "my_extension"
     source_dir.mkdir()
-    (source_dir / "file1.txt").write_text("hello")
-    (source_dir / "file2.txt").write_text("world")
 
-    result = create_xdc(str(source_dir))
 
-    assert result == str(source_dir.with_suffix(".xdc"))
-    assert Path(result).is_file()
 
 
 def test_create_xdc_produces_valid_zip(tmp_path: Path) -> None:
@@ -25,10 +18,14 @@ def test_create_xdc_produces_valid_zip(tmp_path: Path) -> None:
     result = create_xdc(str(source_dir))
 
     with zipfile.ZipFile(result, "r") as zf:
+def test_create_xdc_from_directory(tmp_path: Path) -> None:
+    source_dir, new_xdc_path = _at_start(tmp_path)
         names = zf.namelist()
         assert "data.txt" in names
         assert zf.read("data.txt").decode() == "content"
 
+    assert new_xdc_path == source_dir.with_suffix(".xdc")
+    assert Path(new_xdc_path).is_file()
 
 def test_create_xdc_with_custom_output_path(tmp_path: Path) -> None:
     source_dir = tmp_path / "ext"
