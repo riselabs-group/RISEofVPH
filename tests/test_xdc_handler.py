@@ -41,33 +41,31 @@ def test_create_xdc_produces_valid_zip(tmp_path: Path) -> None:
         assert TMP_FILE_NAME in names
         assert zf.read(TMP_FILE_NAME).decode() == TMP_FILE_CONTENTS
 
-def test_create_xdc_with_nested_directories(tmp_path: Path) -> None:
-    source_dir = tmp_path / "ext"
-    source_dir.mkdir()
-    (source_dir / "a.txt").write_text("a")
-    nested = source_dir / "subdir"
-    nested.mkdir()
-    (nested / "b.txt").write_text("b")
 
 def test_create_xdc_with_custom_output_path(tmp_path: Path) -> None:
     custom_dir = tmp_path / "custom.xdc"
     _, new_xdc_path = _at_start(tmp_path, custom_output_path=custom_dir)
-    result = create_xdc(str(source_dir))
 
     assert new_xdc_path == custom_dir
     assert Path(custom_dir).is_file()
-    with zipfile.ZipFile(result, "r") as zf:
-        names = zf.namelist()
-        assert "a.txt" in names
-        assert "subdir/b.txt" in names
 
 
+def test_create_xdc_with_nested_directories(tmp_path: Path) -> None:
+    source_dir = _create_tmp_source_dir(tmp_path)
+    sub_source_dir = _create_tmp_source_dir(source_dir)
 def test_create_xdc_empty_directory(tmp_path: Path) -> None:
     source_dir = tmp_path / "empty_ext"
     source_dir.mkdir()
 
+    new_xdc_path = create_xdc(source_dir)
     result = create_xdc(str(source_dir))
 
+    with zipfile.ZipFile(new_xdc_path, "r") as zf:
+        names = zf.namelist()
+        assert TMP_FILE_NAME in names
+        sub_expected_value = sub_source_dir / TMP_FILE_NAME
+        clear_sub_expected_value = Path(sub_expected_value).relative_to(source_dir)
+        assert str(clear_sub_expected_value) in names
     assert Path(result).is_file()
     with zipfile.ZipFile(result, "r") as zf:
         assert zf.namelist() == []
