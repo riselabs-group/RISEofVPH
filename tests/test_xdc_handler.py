@@ -72,13 +72,12 @@ def test_create_xdc_raises_error_on_file_instead_of_directory(tmp_path: Path) ->
         create_xdc(file_path)
 
 
-def test_delete_xdc_removes_file(tmp_path: Path) -> None:
-    xdc_file = tmp_path / "test.xdc"
-    xdc_file.write_text("dummy content")
+def test_delete_xdc_file(tmp_path: Path) -> None:
+    _, new_xdc_path = _at_start(tmp_path)
 
-    delete_xdc(str(xdc_file))
+    delete_xdc(new_xdc_path)
 
-    assert not xdc_file.exists()
+    assert not new_xdc_path.exists()
 
 
 def test_delete_xdc_raises_error_on_nonexistent_file(tmp_path: Path) -> None:
