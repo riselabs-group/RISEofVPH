@@ -23,8 +23,7 @@ def create_xdc(directory_path: Path, output_path: Path | None = None) -> Path:
 
 # TODO:
 # Check if the file is a .xdc file
-def delete_xdc(xdc_path: str) -> None:
-    path = Path(xdc_path)
-    if not path.exists():
-        raise FileNotFoundError(f"File not found: {xdc_path}")
-    path.unlink()
+def delete_xdc(xdc_path: Path) -> None:
+    if not xdc_path.exists():
+        raise FileNotFoundError(f"File not found: {str(xdc_path)}")
+    xdc_path.unlink()
