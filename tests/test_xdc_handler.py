@@ -3,6 +3,8 @@ import pytest
 from pathlib import Path
 from src.riseofvph.xdc_handler import create_xdc, delete_xdc
 
+TMP_FILE_NAME = "index.html"
+TMP_FILE_CONTENTS = "<p>Hello World!</p>"
 
 
 def _create_tmp_source_dir(tmp_path: Path) -> Path:
