@@ -8,8 +8,16 @@ from src.riseofvph.xdc_handler import create_xdc, delete_xdc
     source_dir.mkdir()
 
 
+def _at_start(path: Path, custom_output_path=Path("")):
+    source_dir = _create_tmp_source_dir(path)
+    new_xdc_path = ""
 
+    if custom_output_path == Path(""):
+        new_xdc_path = create_xdc(source_dir)
+    else:
+        new_xdc_path = create_xdc(source_dir, output_path=custom_output_path)
 
+    return source_dir, new_xdc_path
 def test_create_xdc_produces_valid_zip(tmp_path: Path) -> None:
     source_dir = tmp_path / "ext"
     source_dir.mkdir()
