@@ -81,7 +81,7 @@ def test_delete_xdc_file(tmp_path: Path) -> None:
 
 
 def test_delete_xdc_raises_error_on_nonexistent_file(tmp_path: Path) -> None:
-    nonexistent = str(tmp_path / "nonexistent.xdc")
+    nonexistent_xdc_path = tmp_path / "nonexistent.xdc"
 
     with pytest.raises(FileNotFoundError):
-        delete_xdc(nonexistent)
+        delete_xdc(nonexistent_xdc_path)
