@@ -21,6 +21,8 @@ def create_xdc(directory_path: Path, output_path: Path | None = None) -> Path:
     return output
 
 
+# TODO:
+# Check if the file is a .xdc file
 def delete_xdc(xdc_path: str) -> None:
     path = Path(xdc_path)
     if not path.exists():
