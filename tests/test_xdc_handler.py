@@ -5,7 +5,11 @@ from src.riseofvph.xdc_handler import create_xdc, delete_xdc
 
 
 
+def _create_tmp_source_dir(tmp_path: Path) -> Path:
+    source_dir = tmp_path / "my_xdc"
     source_dir.mkdir()
+    (source_dir / TMP_FILE_NAME).write_text(TMP_FILE_CONTENTS)
+    return source_dir
 
 
 def _at_start(path: Path, custom_output_path=Path("")):
